@@ -1,18 +1,33 @@
-export default function Post(){
-  return(
-     <div className="post">
-          <div className="image">
-             <img src="https://techcrunch.com/wp-content/uploads/2024/07/faulty-crowdstrike-update.jpg" alt="img" />
-          </div>
-         
-         <div className="text">
-          <h2>Faulty CrowdStrike update causes major global IT outage, taking out banks</h2>
-          <p className="info">
-            <a className="author">Accidic</a>
-            <time>20-07-2024 14:41</time>
-          </p>
-          <p className="summary">“This is not a security incident or cyberattack. The issue has been identified, isolated and a fix has been deployed. We refer customers to the support portal for the latest updates and will continue to provide complete and continuous updates on our website.</p>
-          </div>
-        </div>
-    )
+import React from 'react';
+
+function Post({ title, summary, content, cover, author }) {
+  console.log('Post data received:', { title, summary, content, cover, author });
+
+  // Determine the file extension
+  const fileExtension = cover ? cover.split('.').pop().toLowerCase() : null;
+  const isImage = fileExtension && ['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension);
+
+  return (
+    <div className="post-card">
+      <div className="post-card-header">
+        <h2>{title}</h2>
+        <p className="author">By {author?.username || 'Unknown author'}</p>
+      </div>
+
+      {cover && isImage && <img src={`http://localhost:4000/${cover}`} alt={title} className="post-image" />}
+
+      {cover && !isImage && (
+        <a href={`http://localhost:4000/${cover}`} download className="file-link">
+          Download {fileExtension.toUpperCase()} File
+        </a>
+      )}
+
+      <div className="post-card-body">
+        <p>{summary}</p>
+        <div dangerouslySetInnerHTML={{ __html: content }} />
+      </div>
+    </div>
+  );
 }
+
+export default Post;

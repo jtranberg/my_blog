@@ -1,5 +1,5 @@
 import './App.css';
-import Post from './Components/Post.js'
+import Post from './Components/Post'
 import {Route,Routes} from 'react-router-dom'
 import IndexPage from './Pages/IndexPage'
 import LoginPage from './Pages/LoginPage'
@@ -20,6 +20,7 @@ function App() {
     <Route path='/login' element={<LoginPage/>}/>
      <Route path='/register' element={<RegisterPage/>}/>
      <Route path='/create' element = {<CreatePost/>}/>
+     
      </Route>
   </Routes>
   </UserContextProvider>

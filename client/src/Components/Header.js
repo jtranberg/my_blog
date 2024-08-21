@@ -52,7 +52,7 @@ export default function Header() {
       <nav>
         {username?(
           <>
-           <Link to="/create" className="create">Create new post</Link>
+           <Link to="/create" id='create' className="create">Create new post</Link>
            <button style={{background:'none' ,color:'inherit', cursor:'pointer',textDecoration:'none'}}
             onClick={logout}>Logout ({username})</button>
           </>

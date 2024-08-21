@@ -37,6 +37,22 @@ mongoose.connect('mongodb+srv://muhammadabubakarjamiu:hccSjarodDl5C2B4@cluster0.
   useUnifiedTopology: true,
 });
 
+// Authentication middleware
+function authenticateUser(req, res, next) {
+  const { token } = req.cookies;
+  if (!token) {
+    return res.status(401).json('Unauthorized: No token provided');
+  }
+
+  jwt.verify(token, secret, (err, user) => {
+    if (err) {
+      return res.status(403).json('Unauthorized: Invalid token');
+    }
+    req.user = user;
+    next();
+  });
+}
+
 // Registration route
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
@@ -89,7 +105,7 @@ app.get('/profile', (req, res) => {
     return res.status(401).json('Unauthorized: No token provided');
   }
 
-  jwt.verify(token, secret, {}, (err, info) => {
+  jwt.verify(token, secret, (err, info) => {
     if (err) {
       console.error('JWT verification failed:', err);
       return res.status(403).json('Unauthorized: Invalid token');
@@ -103,43 +119,44 @@ app.post('/logout', (req, res) => {
   res.cookie('token', '', { httpOnly: true, sameSite: 'Strict' }).json('ok');
 });
 
-app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
-  const {originalname,path} = req.file;
+// Create post route
+app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
+  const { originalname, path } = req.file;
   const parts = originalname.split('.');
   const ext = parts[parts.length - 1];
-  const newPath = path+'.'+ext;
+  const newPath = path + '.' + ext;
   fs.renameSync(path, newPath);
 
-  const {token} = req.cookies;
-  jwt.verify(token, secret, {}, async (err,info) => {
+  const { token } = req.cookies;
+  jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
-    const {title,summary,content} = req.body;
+    const { title, summary, content } = req.body;
     const postDoc = await Post.create({
       title,
       summary,
       content,
-      cover:newPath,
-      author:info.id,
+      cover: newPath,
+      author: info.id,
     });
     res.json(postDoc);
   });
-
 });
 
-app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
+// Update post route
+app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
   let newPath = null;
   if (req.file) {
-    const {originalname,path} = req.file;
+    const { originalname, path } = req.file;
     const parts = originalname.split('.');
     const ext = parts[parts.length - 1];
-    newPath = path+'.'+ext;
+    newPath = path + '.' + ext;
     fs.renameSync(path, newPath);
   }
 
-  const {token} = req.cookies;
-  jwt.verify(token, secret, {}, async (err,info) => {
+  const { token } = req.cookies;
+  jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
-    const {id,title,summary,content} = req.body;
+    const { id, title, summary, content } = req.body;
     const postDoc = await Post.findById(id);
     const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
     if (!isAuthor) {
@@ -154,26 +171,36 @@ app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
 
     res.json(postDoc);
   });
-
 });
 
-app.get('/post', async (req,res) => {
+// Get all posts route
+app.get('/post', async (req, res) => {
   res.json(
     await Post.find()
       .populate('author', ['username'])
-      .sort({createdAt: -1})
+      .sort({ createdAt: -1 })
       .limit(20)
   );
 });
 
-// post id route
-
+// Get single post by ID route
 app.get('/post/:id', async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const postDoc = await Post.findById(id).populate('author', ['username']);
   res.json(postDoc);
-})
+});
 
+// Get posts by the logged-in user
+app.get('/user-posts', authenticateUser, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const posts = await Post.find({ author: userId });
+    res.json(posts);
+  } catch (error) {
+    console.error('Error fetching user posts:', error);
+    res.status(500).json({ message: 'Error fetching posts' });
+  }
+});
 
 // Start the server
 app.listen(4000, () => {

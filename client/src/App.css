@@ -153,3 +153,195 @@ div.post-page a.edit-btn{
 a svg{
   height:20px;
 }
+.post-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  background-color: #fff;
+}
+
+.post-card-header {
+  margin-bottom: 12px;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.file-link {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.file-link:hover {
+  text-decoration: underline;
+}
+
+.author {
+  color: #555;
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
+.post-card-body {
+  margin-top: 12px;
+}
+
+.post-card-body p {
+  margin-bottom: 16px;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+/* Main container styling */
+.main-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Header styling */
+.main-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.main-header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.main-header p {
+  font-size: 1.2em;
+  color: #666;
+}
+
+/* Grid layout for posts */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Styling for when there are no posts */
+.posts-grid p {
+  grid-column: span 2; /* Center text across grid */
+  text-align: center;
+  font-size: 1.5em;
+  color: #999;
+}
+
+body {
+  background: linear-gradient(135deg, #2381b3c8, #055261); /* Blue gradient background */
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  color: #fff; /* Ensure the default text is white */
+}
+#create
+{
+  display: flex;
+  width: 14rem;
+  height: 2rem;
+  border: 2px solid #e9ecf7;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+.main-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: #e0f7fa; /* Light cyan */
+}
+
+.main-header p {
+  font-size: 1.2em;
+  color: #b3e5fc; /* Light blue */
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.post-card {
+  background: rgba(76, 103, 238, 0.26); /* Semi-transparent white */
+  border-radius: 15px;
+  padding: 20px;
+  margin: 16px;
+  max-width: 600px;
+  backdrop-filter: blur(10px); /* Blurring the background */
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-5px); /* Lift the card on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+.post-card-header h2 {
+  color: #e0f7fa; /* Light cyan */
+  margin-bottom: 10px;
+  font-size: 1.8em;
+}
+
+.author {
+  color: #b3e5fc; /* Lighter blue */
+  font-size: 0.9em;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Image shadow */
+}
+
+.file-link {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: bold;
+  color: #cac6f3; /* Light blue */
+  text-decoration: none;
+}
+
+.file-link:hover {
+  text-decoration: underline;
+  color: #d2e9f5; /* Darker blue on hover */
+}
+
+.post-card-body {
+  margin-top: 12px;
+  color: #e1f5fe; /* Pale blue for text */
+}
+
+.post-card-body p {
+  margin-bottom: 16px;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+

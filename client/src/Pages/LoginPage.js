@@ -2,14 +2,31 @@ import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
-
-
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
   const { setUserInfo } = useContext(UserContext);
 
+  // Function to fetch user's posts after login
+  async function fetchUserPosts() {
+    try {
+      const response = await fetch('http://localhost:4000/user-posts', {
+        credentials: 'include', // Send cookies along with the request
+      });
+      if (response.ok) {
+        const posts = await response.json();
+        console.log('User posts:', posts);
+        // You can store the posts in context or state if needed
+      } else {
+        console.error('Failed to fetch posts:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching user posts:', error);
+    }
+  }
+
+  // Login function
   async function login(event) {
     event.preventDefault();
     try {
@@ -21,11 +38,11 @@ export default function LoginPage() {
       });
 
       if (response.ok) {
-        // Check if the response is JSON before parsing
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.indexOf('application/json') !== -1) {
           const userInfo = await response.json();
           setUserInfo(userInfo);
+          await fetchUserPosts(); // Fetch posts after login
           setRedirect(true);
         } else {
           console.error('Expected JSON, got:', contentType);
